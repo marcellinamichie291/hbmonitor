@@ -1,0 +1,126 @@
+import streamlit as st
+import pandas as pd
+import altair as alt
+from datetime import datetime
+
+#dynamoDB
+import boto3
+from boto3.dynamodb.conditions import Key
+service='dynamodb'
+region_name='ap-northeast-2'
+aws_access_key_id='AKIA6IE5OZRJJT2V7GQD'
+aws_secret_access_key='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'
+
+##Dai Status
+def dai_eod():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('onchain')
+    response = table.query(KeyConditionExpression=Key('name').eq('eth_dai_risk'),Limit=1,ScanIndexForward=False)
+    print(response)
+    df=response['Items'][0]
+
+    result={
+        'timestamp': df['timestamp'],
+        'Total DAI':'{:,.0f} USD'.format(float(df['dai_issued'])),
+        'Total Risky Debt(%)':'{:,.1f}% ({:,.0f} USD)'.format((float(df['dai_risky_debt'])/float(df['dai_issued'])*100),float(df['dai_risky_debt'])),
+        'High Risky Debt(%)':'{:,.1f}% ({:,.0f} USD)'.format((float(df['dai_high_risky_debt'])/float(df['dai_issued'])*100),float(df['dai_high_risky_debt'])),
+        'Mid Risky Debt(%)':'{:,.1f}% ({:,.0f} USD)'.format((float(df['dai_medium_risky_debt'])/float(df['dai_issued'])*100),float(df['dai_medium_risky_debt'])),
+        'Low Risky Debt(%)':'{:,.1f}% ({:,.0f} USD)'.format((float(df['dai_low_risky_debt'])/float(df['dai_issued'])*100),float(df['dai_low_risky_debt'])),}
+    return result
+
+def dai_chart():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('onchain')
+    response = table.query(KeyConditionExpression=Key('name').eq('eth_dai_risk'),Limit=30,ScanIndexForward=False)
+    df=response['Items']
+
+    df = pd.DataFrame.from_dict(df).set_index(keys='timestamp', drop=True).drop('name', axis=1).astype(
+        float)
+
+    df['total_risky_debt'] = df['dai_risky_debt'] / df['dai_issued']
+    df['high_risky_debt'] = df['dai_high_risky_debt'] / df['dai_issued']
+    df['mid_risky_debt'] = df['dai_medium_risky_debt'] / df['dai_issued']
+    df['low_risky_debt'] = df['dai_low_risky_debt'] / df['dai_issued']
+
+    df = df[['total_risky_debt', 'high_risky_debt', 'mid_risky_debt', 'low_risky_debt']] * 100
+
+    return df
+
+def binance_funding():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('market')
+    response = table.query(KeyConditionExpression=Key('name').eq('fut_binancefunding_minute'),Limit=1,ScanIndexForward=False)
+    df=response['Items'][0]
+    return df
+
+def trx_usdd_eod():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('onchain')
+    response = table.query(KeyConditionExpression=Key('name').eq('trx_usdd_risk'),Limit=1,ScanIndexForward=False)
+    df=response['Items'][0]
+    print(df)
+
+    result={
+        'timestamp': df['timestamp'],
+        'Total USDD':'{:,.0f} USD Collateral({:,.2f}%)'.format(float(df['usdd_issued']) , ((float(df['usdd_collateral_usdt']) + float(df['usdd_collateral_usdc']) + float(df['usdd_collateral_trx']) + float(df['usdd_collateral_btc']))/float(df['usdd_issued']))*100),
+        'Collaterals' : 'BTC({:,.2f}%) USDT({:,.2f}%) USDC({:,.2f}%) TRX({:,.2f}%) '.format(100*float(df['usdd_collateral_btc'])/float(df['usdd_issued']),100*float(df['usdd_collateral_usdt'])/float(df['usdd_issued']),100*float(df['usdd_collateral_usdc'])/float(df['usdd_issued']),100*float(df['usdd_collateral_trx'])/float(df['usdd_issued'])),
+        'Trx Market cap / USDD' : '{:,.0f}%'.format(100*float(df['tron_mv'])/float(df['usdd_issued'])),
+        'Curve_TVL' : 'USDD: {:,.0f}USD ({:,.0f}%)  3POOL: {:,.0f}USD ({:,.0f}%)'.format(float(df['curve_usdd_tvl']),100*float(df['curve_usdd_tvl'])/(float(df['curve_usdd_tvl'])+float(df['curve_3crv_tvl'])),float(df['curve_3crv_tvl']),100*float(df['curve_3crv_tvl'])/(float(df['curve_usdd_tvl'])+float(df['curve_3crv_tvl']))),
+        'Price' : 'CurveFi(DEX): {:,.4f}   HUOBI(CEX): {:,.4f} '.format(float(df['usdd_curve_dex_price']),float(df['usdd_huobi_cex_price'])),
+
+    }
+    return result
+
+def trx_usdd_chart():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('onchain')
+    response = table.query(KeyConditionExpression=Key('name').eq('trx_usdd_risk'),Limit=30,ScanIndexForward=False)
+    df=response['Items'][0]
+    print(df)
+
+    result={
+        'timestamp': df['timestamp'],
+        'Total USDD':'{:,.0f} USD Collateral({:,.2f}%)'.format(float(df['usdd_issued']) , ((float(df['usdd_collateral_usdt']) + float(df['usdd_collateral_usdc']) + float(df['usdd_collateral_trx']) + float(df['usdd_collateral_btc']))/float(df['usdd_issued']))*100),
+        'Collaterals' : 'BTC({:,.2f}%) USDT({:,.2f}%) USDC({:,.2f}%) TRX({:,.2f}%) '.format(100*float(df['usdd_collateral_btc'])/float(df['usdd_issued']),100*float(df['usdd_collateral_usdt'])/float(df['usdd_issued']),100*float(df['usdd_collateral_usdc'])/float(df['usdd_issued']),100*float(df['usdd_collateral_trx'])/float(df['usdd_issued'])),
+        'Trx Market cap / USDD' : '{:,.0f}%'.format(100*float(df['tron_mv'])/float(df['usdd_issued'])),
+        'Curve_TVL' : 'USDD: {:,.0f}USD ({:,.0f}%)  3POOL: {:,.0f}USD ({:,.0f}%)'.format(float(df['curve_usdd_tvl']),100*float(df['curve_usdd_tvl'])/(float(df['curve_usdd_tvl'])+float(df['curve_3crv_tvl'])),float(df['curve_3crv_tvl']),100*float(df['curve_3crv_tvl'])/(float(df['curve_usdd_tvl'])+float(df['curve_3crv_tvl']))),
+        'Price' : 'CurveFi(DEX): {:,.4f}   HUOBI(CEX): {:,.4f} '.format(float(df['usdd_curve_dex_price']),float(df['usdd_huobi_cex_price'])),
+
+    }
+    return result
+
+###########
+#1.Binane Funding Rate
+bnb_funding=binance_funding()
+print(bnb_funding)
+df = pd.DataFrame([bnb_funding['binance_delivery']]).transpose()
+df = df.rename(columns={0: 'FF(bp)'})
+df['FF(bp)'] = df['FF(bp)'].apply(lambda x: float(x))
+df = df.sort_values('FF(bp)', ascending=False)
+
+st.write("1.Binance Funding Rate(1min)")
+st.write("<last update: "+bnb_funding['timestamp']+">")
+st.write("<Best 5>")
+st.write(df.head(5).transpose())
+st.write("<Worst 5>")
+st.write(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
+
+
+#2.dai
+
+dai=dai_eod()
+st.write("2.ETH_DAI_Risk_Factor")
+st.write(dai)
+dai_chart=dai_chart()
+
+st.write("<TOTAL RISKY DEBT(%)>")
+st.line_chart(dai_chart)
+
+
+#3. tron usdd
+usdd=trx_usdd_eod()
+st.write("3.TRX_USDD_Risk_Factor")
+st.write(usdd)
+usdd_chart=trx_usdd_chart()
+
+
