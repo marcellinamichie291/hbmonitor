@@ -7,8 +7,8 @@ import boto3
 from boto3.dynamodb.conditions import Key
 service='dynamodb'
 region_name='ap-northeast-2'
-aws_access_key_id=st.secrets["aws_access"]
-aws_secret_access_key=st.secrets["aws_secret"]
+aws_access_key_id=st.secrets['access_key']
+aws_secret_access_key=st.secrets['secret_key']
 
 
 ##Dai Status
