@@ -7,9 +7,10 @@ import boto3
 from boto3.dynamodb.conditions import Key
 service='dynamodb'
 region_name='ap-northeast-2'
-aws_access_key_id=st.secrets['aws_access']
-aws_secret_access_key=st.secrets['aws_secret']
-
+#aws_access_key_id=st.secrets['aws_access']
+#aws_secret_access_key=st.secrets['aws_secret']
+aws_access_key_id="AKIA6IE5OZRJDUDS74NL"
+aws_secret_access_key="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"
 
 def binance_funding():
     dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
@@ -33,8 +34,31 @@ def global_premium():
     df['premium']=df['premium'].apply(lambda x : '{:,.1f}%'.format(x))
     return df,timestamp,str(base_price)
 
+def neuralprophet():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('neuralprophet')
+    response = table.query(KeyConditionExpression=Key('type').eq('btc_macro_1d_v1'),Limit=1,ScanIndexForward=False)
+    df=response['Items'][0]
+    result={
+        'timestamp':df['timestamp'],
+        'Current_BTC_Price':'{:,.2f}'.format(float(df['base_price'])),
+        'Forecast_time':df['timestamp_24h'],
+        'Forecast_BTC_Price':'{:,.2f}'.format(float(df['forecast_price'])),
+        'Variables':df['variables']
+    }
+    return result
+
 ###########
-#1.Binane Funding Rate
+
+st.title("Main : Market Monitoring")
+
+#1
+st.header("1.BTC Forecasting(by neuralprophet)")
+np=neuralprophet()
+st.write(np)
+
+#2
+
 bnb_funding=binance_funding()
 
 df = pd.DataFrame([bnb_funding['binance_delivery']]).transpose()
@@ -42,19 +66,20 @@ df = df.rename(columns={0: 'FF(bp)'})
 df['FF(bp)'] = df['FF(bp)'].apply(lambda x: float(x))
 df = df.sort_values('FF(bp)', ascending=False)
 
-st.title("Main : Market Monitoring")
-#1
-st.header("1.Binance Funding Rates(1mins)")
+
+st.header("2.Binance Funding Rates")
 st.write("<last update: "+bnb_funding['timestamp']+">")
 st.write("<Best 5>")
 st.write(df.head(5).transpose())
 st.write("<Worst 5>")
 st.write(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
 
-#2
-st.header("2.Daily BTC Global Premium")
+#3
+st.header("3.Daily BTC Global Premium")
 
 premium=global_premium()
 st.write("< BASE PRICE : Binance "+premium[2]+ " ("+premium[1]+") >")
 st.write(premium[0].transpose())
+
+
 
