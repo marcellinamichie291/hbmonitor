@@ -7,8 +7,9 @@ import boto3
 from boto3.dynamodb.conditions import Key
 service='dynamodb'
 region_name='ap-northeast-2'
-aws_access_key_id=st.secrets['aws_access_key']
-aws_secret_access_key=st.secrets['aws_secret_key']
+aws_access_key_id=st.secrets["aws_access"]
+aws_secret_access_key=st.secrets["aws_secret"]
+
 
 ##Dai Status
 def dai_eod():
@@ -45,13 +46,6 @@ def dai_chart():
 
     return df
 
-def binance_funding():
-    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
-    table = dynamodb.Table('market')
-    response = table.query(KeyConditionExpression=Key('name').eq('fut_binancefunding_minute'),Limit=1,ScanIndexForward=False)
-    df=response['Items'][0]
-    return df
-
 def trx_usdd_eod():
     dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
     table = dynamodb.Table('onchain')
@@ -84,26 +78,11 @@ def trx_usdd_chart():
     return df
 
 ###########
-#1.Binane Funding Rate
-bnb_funding=binance_funding()
+#1
 
-df = pd.DataFrame([bnb_funding['binance_delivery']]).transpose()
-df = df.rename(columns={0: 'FF(bp)'})
-df['FF(bp)'] = df['FF(bp)'].apply(lambda x: float(x))
-df = df.sort_values('FF(bp)', ascending=False)
-
-st.title("1.Binance Funding Rate(1min)")
-st.write("<last update: "+bnb_funding['timestamp']+">")
-st.write("<Best 5>")
-st.write(df.head(5).transpose())
-st.write("<Worst 5>")
-st.write(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
-
-
-#2.dai
-
+st.title("Page2 : algorithm stablecoin risk")
+st.header("1.Ethereum : DAI")
 dai=dai_eod()
-st.title("2.ETH_DAI_Risk_Factor")
 st.write(dai)
 dai_chart=dai_chart()
 
@@ -111,13 +90,11 @@ st.write("<TOTAL RISKY DEBT(%)>")
 st.line_chart(dai_chart)
 
 
-#3. tron usdd
+#2
 usdd=trx_usdd_eod()
-st.title("3.TRX_USDD_Risk_Factor")
+st.header("2.Tron : USDD")
 st.write(usdd)
 usdd_chart=trx_usdd_chart()
 st.write("<USDD Collateral ratio(%)>")
 st.line_chart(usdd_chart)
-
-
 
