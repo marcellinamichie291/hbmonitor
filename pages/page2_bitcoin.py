@@ -9,11 +9,10 @@ import requests
 access_token=st.secrets['cryptoquant']
 headers = {'Authorization': 'Bearer ' + access_token}
 
-url={'oi':'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=500&exchange=all_exchange&from=',
-     'ohlc':'https://api.cryptoquant.com/v1/btc/market-data/price-ohlcv?window=day&limit=500&from=',
+url={'mvrv':'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=day&limit=365&from=',
+     'oi':'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=500&exchange=all_exchange&from=',
      'mv':'https://api.cryptoquant.com/v1/btc/market-data/capitalization?window=day&limit=500&from=',
      'est_lv':'https://api.cryptoquant.com/v1/btc/market-indicator/estimated-leverage-ratio?exchange=binance&window=day&limit=500&from=',
-
     }
 
 
@@ -35,7 +34,7 @@ def fetch_data(type,df_day):
 st.title("Page2 : Bitcoin Monitoring")
 st.header("1.PnL Monitoring")
 st.write("-MVRV Ratio")
-df=fetch_data('mv',100)
+df=fetch_data('mvrv',100)
 st.line_chart(df)
 
 
