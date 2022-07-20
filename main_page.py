@@ -69,16 +69,16 @@ df = df.sort_values('FF(bp)', ascending=False)
 st.header("2.Binance Funding Rates")
 st.write("<last update: "+bnb_funding['timestamp']+">")
 st.write("<Best 5>")
-st.write(df.head(5).transpose())
+st.table(df.head(5).transpose())
 st.write("<Worst 5>")
-st.write(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
+st.table(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
 
 #3
 st.header("3.Daily BTC Global Premium")
 
 premium=global_premium()
 st.write("< BASE PRICE : Binance "+premium[2]+ " ("+premium[1]+") >")
-st.write(premium[0].transpose())
+st.table(premium[0].transpose())
 
 
 

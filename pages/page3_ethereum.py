@@ -7,6 +7,7 @@ import boto3
 from boto3.dynamodb.conditions import Key
 service='dynamodb'
 region_name='ap-northeast-2'
+
 aws_access_key_id=st.secrets['aws_access']
 aws_secret_access_key=st.secrets['aws_secret']
 
@@ -56,7 +57,7 @@ st.write(dai)
 dai_chart=dai_chart()
 
 st.write("<TOTAL RISKY DEBT(%)>")
-st.line_chart(dai_chart)
+st.line_chart(dai_chart,width=0, height=0,use_container_width=True)
 
 
 

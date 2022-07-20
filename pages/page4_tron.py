@@ -12,6 +12,7 @@ aws_secret_access_key=st.secrets['aws_secret']
 
 
 
+
 def trx_usdd_eod():
     dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
     table = dynamodb.Table('onchain')
@@ -50,4 +51,4 @@ st.header("1.USDD - Algorithmic stablecoin")
 st.write(usdd)
 usdd_chart=trx_usdd_chart()
 st.write("<USDD Collateral ratio(%)>")
-st.line_chart(usdd_chart)
+st.line_chart(usdd_chart,width=0, height=0,use_container_width=True)
