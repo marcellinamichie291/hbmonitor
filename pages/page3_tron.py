@@ -46,7 +46,7 @@ def trx_usdd_chart():
 #1
 st.title("Page3 : Risk on Tron ")
 usdd=trx_usdd_eod()
-st.header("1.USDD")
+st.header("1.USDD - Algorithmic stablecoin")
 st.write(usdd)
 usdd_chart=trx_usdd_chart()
 st.write("<USDD Collateral ratio(%)>")

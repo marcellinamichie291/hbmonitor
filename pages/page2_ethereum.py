@@ -49,8 +49,8 @@ def dai_chart():
 ###########
 #1
 
-st.title("Page2 : Risk on Ethereum ")
-st.header("1.DAI")
+st.title("Page2 : Ethereum Monitoring")
+st.header("1.DAI - Algorithmic stablecoin")
 dai=dai_eod()
 st.write(dai)
 dai_chart=dai_chart()
