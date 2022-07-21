@@ -24,7 +24,6 @@ def fetch_data(type,df_day):
 
     today = datetime.now(gettz('Asia/Seoul')).now()
     data_from = (today - timedelta(days=df_day)).strftime("%Y%m%d")
-
     df_url=url[type]+data_from
     df=requests.get(df_url, headers=headers).json()
     df=df['result']['data']
@@ -41,21 +40,20 @@ symbol=['mvrv','sopr_ratio','nupl']
 result={}
 for i in symbol:
     df=fetch_data(i,365*5)
-    value=df.tail(1).values[0][0]
-    max=df.max()[0]
-    min=df.min()[0]
+    df['rank']=df[i].rank(ascending=False)
+    value=df[i][-1]
+    rank=100*df['rank'][-1]/len(df)
+
+
+
     tmp={
-        'value' : '{:,.2f}'.format(value),
-        'max_5y' : '{:,.2f}'.format(max),
-        'min_5y' : '{:,.2f}'.format(min),
+        'VALUE' : '{:,.2f}'.format(value),
+        '5Y_PERCENTILE' : '{:,.0f}%'.format(rank),
     }
     result[i]=tmp
 
 st.table(pd.DataFrame(result).transpose())
 
-
-
-#st.line_chart(df,width=0, height=0)
 
 
 
