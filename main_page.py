@@ -7,6 +7,7 @@ import boto3
 from boto3.dynamodb.conditions import Key
 service='dynamodb'
 region_name='ap-northeast-2'
+
 aws_access_key_id=st.secrets['aws_access']
 aws_secret_access_key=st.secrets['aws_secret']
 
@@ -40,10 +41,10 @@ def neuralprophet():
     df=response['Items'][0]
     result={
         'timestamp':df['timestamp'],
-        'Current_BTC_Price':'{:,.2f}'.format(float(df['base_price'])),
+        'Current_BTC_Price':df['base_price'],
         'Forecast_time':df['timestamp_24h'],
-        'Forecast_BTC_Price':'{:,.2f}'.format(float(df['forecast_price'])),
-        'Variables':df['variables']
+        'Forecast_BTC_Price':df['forecast_price'],
+#        'Variables':df['variables']
     }
     return result
 
@@ -53,9 +54,16 @@ st.title("Main : Market Monitoring")
 
 #1
 st.header("1.BTC Forecasting(by neuralprophet)")
+st.write("\n")
 np=neuralprophet()
-st.write(np)
 
+diff='{:,.1f}'.format(float(np['Forecast_BTC_Price'])-float(np['Current_BTC_Price']))
+forecast='{:,.1f}'.format(float(np['Forecast_BTC_Price']))
+
+col1, col2= st.columns(2)
+col1.metric("BTC Price @ "+np['timestamp'],np['Current_BTC_Price'])
+col2.metric("Forecast @ "+np['Forecast_time'],forecast,diff)
+st.write("\n")
 #2
 
 bnb_funding=binance_funding()
