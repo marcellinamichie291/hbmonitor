@@ -6,7 +6,8 @@ import time
 
 import requests
 
-access_token=st.secrets['cryptoquant']
+#access_token=st.secrets['cryptoquant']
+access_token="fFPP83qHReZ0CQHtxjngf6YW7W6vLV7bQnBHropa"
 headers = {'Authorization': 'Bearer ' + access_token}
 
 
