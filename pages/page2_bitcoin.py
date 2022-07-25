@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 from dateutil.tz import gettz
-
+from ta.momentum import RSIIndicator
 import requests
 
 
@@ -14,9 +14,9 @@ headers = {'Authorization': 'Bearer ' + access_token}
 url={'mvrv' : 'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=day&limit=2000&from=',
      'sopr_ratio' : 'https://api.cryptoquant.com/v1/btc/market-indicator/sopr-ratio?window=day&limit=2000&from=',
      'puell_multiple' : 'https://api.cryptoquant.com/v1/btc/network-indicator/puell-multiple?window=day&limit=2000&from=',
-#     'oi':'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=2000&exchange=all_exchange&from=',
+     'open_interest':'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=2000&exchange=all_exchange&from=',
 #     'mv':'https://api.cryptoquant.com/v1/btc/market-data/capitalization?window=day&limit=2000&from=',
-     'estimated_leverage_ratio':'https://api.cryptoquant.com/v1/btc/market-indicator/estimated-leverage-ratio?exchange=binance&window=day&limit=2000&from=',
+#     'estimated_leverage_ratio':'https://api.cryptoquant.com/v1/btc/market-indicator/estimated-leverage-ratio?exchange=binance&window=day&limit=2000&from=',
 
     }
 
@@ -73,31 +73,19 @@ col4.metric(symbol[2],result.loc[symbol[2],'VALUE'],result.loc[symbol[2],'DIFF']
 
 #Leverage
 st.header("2.Leverage Score") #the higher, the higher risk
-symbol=['estimated_leverage_ratio']
+symbol=['open_interest']
+df=fetch_data(symbol[0],365*5)
+df_rsi=pd.DataFrame(RSIIndicator(df['open_interest']).rsi().dropna())
+df_rsi['rank']=df_rsi['rsi'].rank(ascending=False)
+rank=100*df_rsi['rank'][-1]/len(df_rsi)
+p0='{:,.2f}'.format(df_rsi['rsi'][-1])
+diff='{:,.2f}'.format(df_rsi['rsi'][-1]-df_rsi['rsi'][-2])
 
-result={}
-for i in symbol:
-    df=fetch_data(i,365*5)
+col1, col2 = st.columns(2)
+col1.metric("score",int(rank))
+col2.metric('open_interest_RSI',p0,diff)
 
-    df['rank']=df[i].rank(ascending=False)
-    t0=df[i][-1]
-    t_1=df[i][-2]
-    diff=t0-t_1
 
-    rank=100*df['rank'][-1]/len(df)
-
-    tmp={
-        'VALUE' : '{:,.2f}'.format(t0),
-        'DIFF' : '{:,.2f}'.format(diff),
-        'SCORE': '{:,.0f}'.format(rank),
-    }
-    result[i]=tmp
-
-result=pd.DataFrame(result).transpose()
-
-col1, col2= st.columns(2)
-col1.metric("score",result['SCORE'].astype(float).mean().astype(int))
-col2.metric(symbol[0],result.loc[symbol[0],'VALUE'],result.loc[symbol[0],'DIFF'])
 
 
 
