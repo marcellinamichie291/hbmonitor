@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
-
 #dynamoDB
 import boto3
 from boto3.dynamodb.conditions import Key
@@ -64,6 +62,7 @@ col1, col2= st.columns(2)
 col1.metric("BTC Price @ "+np['timestamp'],np['Current_BTC_Price'])
 col2.metric("Forecast @ "+np['Forecast_time'],forecast,diff)
 st.write("\n")
+
 #2
 
 bnb_funding=binance_funding()
@@ -74,11 +73,11 @@ df['FF(bp)'] = df['FF(bp)'].apply(lambda x: float(x))
 df = df.sort_values('FF(bp)', ascending=False)
 
 
-st.header("2.Binance Funding Rates")
-st.write("<last update: "+bnb_funding['timestamp']+">")
-st.write("<Best 5>")
+st.header("2.Funding Rates")
+st.write("<Binance_last update: "+bnb_funding['timestamp']+">")
+st.write("-Best 5")
 st.table(df.head(5).transpose())
-st.write("<Worst 5>")
+st.write("-Worst 5")
 st.table(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
 
 #3
@@ -87,6 +86,9 @@ st.header("3.Daily BTC Global Premium")
 premium=global_premium()
 st.write("< BASE PRICE : Binance "+premium[2]+ " ("+premium[1]+") >")
 st.table(premium[0].transpose())
+
+
+
 
 
 

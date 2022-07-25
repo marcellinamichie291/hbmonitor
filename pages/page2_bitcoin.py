@@ -2,22 +2,21 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 from dateutil.tz import gettz
-import time
 
 import requests
 
-#access_token=st.secrets['cryptoquant']
-access_token="fFPP83qHReZ0CQHtxjngf6YW7W6vLV7bQnBHropa"
+
+access_token=st.secrets['cryptoquant']
 headers = {'Authorization': 'Bearer ' + access_token}
 
 
-symbol=['mvrv','sopr_ratio']
-url={'mvrv':'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=day&limit=2000&from=',
-     'sopr_ratio':'https://api.cryptoquant.com/v1/btc/market-indicator/sopr-ratio?window=day&limit=2000&from=',
-#     'nupl':'https://api.cryptoquant.com/v1/btc/network-indicator/nupl?window=day&limit=2000&from=',
+
+url={'mvrv' : 'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=day&limit=2000&from=',
+     'sopr_ratio' : 'https://api.cryptoquant.com/v1/btc/market-indicator/sopr-ratio?window=day&limit=2000&from=',
+     'puell_multiple' : 'https://api.cryptoquant.com/v1/btc/network-indicator/puell-multiple?window=day&limit=2000&from=',
 #     'oi':'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=2000&exchange=all_exchange&from=',
 #     'mv':'https://api.cryptoquant.com/v1/btc/market-data/capitalization?window=day&limit=2000&from=',
-#     'est_lv':'https://api.cryptoquant.com/v1/btc/market-indicator/estimated-leverage-ratio?exchange=binance&window=day&limit=2000&from=',
+     'estimated_leverage_ratio':'https://api.cryptoquant.com/v1/btc/market-indicator/estimated-leverage-ratio?exchange=binance&window=day&limit=2000&from=',
 
     }
 
@@ -37,8 +36,14 @@ def fetch_data(type,df_day):
 
 #1.Bitcoin Monitoring
 
-st.title("Page2 : Bitcoin Monitoring")
-st.header("1.Onchain(PnL) Monitoring")
+st.title("Page2 : Bitcoin_Score")
+
+#1 P/L
+
+symbol=['mvrv','sopr_ratio','puell_multiple']
+
+st.header("1.Onchain_P&L_Score")
+
 
 result={}
 for i in symbol:
@@ -59,12 +64,40 @@ for i in symbol:
 
 result=pd.DataFrame(result).transpose()
 #Col1
-col1, col2, col3 = st.columns(3)
-col1.metric("score",result['SCORE'].astype(int).mean())
+col1, col2, col3,col4 = st.columns(4)
+col1.metric("score",result['SCORE'].astype(float).mean().astype(int))
 col2.metric(symbol[0],result.loc[symbol[0],'VALUE'],result.loc[symbol[0],'DIFF'])
 col3.metric(symbol[1],result.loc[symbol[1],'VALUE'],result.loc[symbol[1],'DIFF'])
+col4.metric(symbol[2],result.loc[symbol[2],'VALUE'],result.loc[symbol[2],'DIFF'])
 
 
+#Leverage
+st.header("2.Leverage Score") #the higher, the higher risk
+symbol=['estimated_leverage_ratio']
+
+result={}
+for i in symbol:
+    df=fetch_data(i,365*5)
+
+    df['rank']=df[i].rank(ascending=False)
+    t0=df[i][-1]
+    t_1=df[i][-2]
+    diff=t0-t_1
+
+    rank=100*df['rank'][-1]/len(df)
+
+    tmp={
+        'VALUE' : '{:,.2f}'.format(t0),
+        'DIFF' : '{:,.2f}'.format(diff),
+        'SCORE': '{:,.0f}'.format(rank),
+    }
+    result[i]=tmp
+
+result=pd.DataFrame(result).transpose()
+
+col1, col2= st.columns(2)
+col1.metric("score",result['SCORE'].astype(float).mean().astype(int))
+col2.metric(symbol[0],result.loc[symbol[0],'VALUE'],result.loc[symbol[0],'DIFF'])
 
 
 
