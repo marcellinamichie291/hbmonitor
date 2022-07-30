@@ -9,8 +9,6 @@ import requests
 access_token=st.secrets['cryptoquant']
 headers = {'Authorization': 'Bearer ' + access_token}
 
-
-
 url={'mvrv' : 'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=day&limit=2000&from=',
      'sopr_ratio' : 'https://api.cryptoquant.com/v1/btc/market-indicator/sopr-ratio?window=day&limit=2000&from=',
      'puell_multiple' : 'https://api.cryptoquant.com/v1/btc/network-indicator/puell-multiple?window=day&limit=2000&from=',
