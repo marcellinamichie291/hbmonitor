@@ -78,7 +78,7 @@ col5.metric('utxo in profit(%)',result.loc[symbol[3],'VALUE'],result.loc[symbol[
 
 
 #2.Derivatives
-st.header("2.Derivatives") #the higher, the higher risk
+st.header("2.Market_Derivatives_Score") #the higher, the higher risk
 symbol=['open_interest','funding_rates']
 
 
