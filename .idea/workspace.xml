@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="Economic Calendar Added">
+    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="mainpage_tab_added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/page2_bitcoin.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page2_bitcoin.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +40,7 @@
       <recent name="$PROJECT_DIR$/pages" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_page">
+  <component name="RunManager" selected="Python.page2_bitcoin">
     <configuration name="main_page" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="hbmonitor" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -85,8 +85,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main_page" />
         <item itemvalue="Python.page2_bitcoin" />
+        <item itemvalue="Python.main_page" />
       </list>
     </recent_temporary>
   </component>
@@ -141,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659185968768</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="mainpage_tab_added">
+      <created>1659227727485</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659227727485</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,6 +167,7 @@
     <MESSAGE value="estimated leverage ratio added" />
     <MESSAGE value="oi_rsi_added" />
     <MESSAGE value="Economic Calendar Added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Economic Calendar Added" />
+    <MESSAGE value="mainpage_tab_added" />
+    <option name="LAST_COMMIT_MESSAGE" value="mainpage_tab_added" />
   </component>
 </project>

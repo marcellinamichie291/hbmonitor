@@ -13,6 +13,7 @@ url={'mvrv' : 'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=d
      'sopr_ratio' : 'https://api.cryptoquant.com/v1/btc/market-indicator/sopr-ratio?window=day&limit=2000&from=',
      'puell_multiple' : 'https://api.cryptoquant.com/v1/btc/network-indicator/puell-multiple?window=day&limit=2000&from=',
      'open_interest':'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=2000&exchange=all_exchange&from=',
+     'pnl_utxo':'https://api.cryptoquant.com/v1/btc/network-indicator/pnl-utxo?window=day&limit=2000&from=',
 #     'mv':'https://api.cryptoquant.com/v1/btc/market-data/capitalization?window=day&limit=2000&from=',
 #     'estimated_leverage_ratio':'https://api.cryptoquant.com/v1/btc/market-indicator/estimated-leverage-ratio?exchange=binance&window=day&limit=2000&from=',
 
@@ -38,15 +39,20 @@ st.title("Page2 : Bitcoin_Score")
 
 #1 P/L
 
-symbol=['mvrv','sopr_ratio','puell_multiple']
+symbol=['mvrv','sopr_ratio','puell_multiple','pnl_utxo']
 
 st.header("1.Onchain_P&L_Score")
 
 
 result={}
 for i in symbol:
-    df=fetch_data(i,365*5)
-    df['rank']=df[i].rank(ascending=False)
+
+    if i==symbol[3]:
+        df=fetch_data(i,365*5)[['profit_percent']].rename(columns={'profit_percent':'pnl_utxo'})
+    else:
+        df=fetch_data(i,365*5)
+
+    df['rank']=df[i].rank(ascending=False) #the lower index, ther higher score
     t0=df[i][-1]
     t_1=df[i][-2]
     diff=t0-t_1
@@ -58,16 +64,18 @@ for i in symbol:
         'DIFF' : '{:,.2f}'.format(diff),
         'SCORE': '{:,.0f}'.format(rank),
     }
+
     result[i]=tmp
 
 result=pd.DataFrame(result).transpose()
 #Col1
-col1, col2, col3,col4 = st.columns(4)
+
+col1, col2, col3, col4, col5 = st.columns(5)
 col1.metric("score",result['SCORE'].astype(float).mean().astype(int))
 col2.metric(symbol[0],result.loc[symbol[0],'VALUE'],result.loc[symbol[0],'DIFF'])
 col3.metric(symbol[1],result.loc[symbol[1],'VALUE'],result.loc[symbol[1],'DIFF'])
 col4.metric(symbol[2],result.loc[symbol[2],'VALUE'],result.loc[symbol[2],'DIFF'])
-
+col5.metric('utxo in profit(%)',result.loc[symbol[3],'VALUE'],result.loc[symbol[3],'DIFF'])
 
 #Leverage
 st.header("2.Leverage Score") #the higher, the higher risk
