@@ -93,47 +93,46 @@ def economic_calendar():
 
 st.title("Main : Market Monitoring")
 
-#1
-st.header("1.BTC Forecasting(by neuralprophet)")
-st.write("\n")
-np=neuralprophet()
+tab1, tab2, tab3, tab4 = st.tabs(["BTC Forecasting",
+                            "Funding Rates",
+                            "Daily BTC Global Premium",
+                            "Economic Calendar"])
 
-diff='{:,.1f}'.format(float(np['Forecast_BTC_Price'])-float(np['Current_BTC_Price']))
-forecast='{:,.1f}'.format(float(np['Forecast_BTC_Price']))
+with tab1:
+    st.header("BTC Forecasting(by neuralprophet)")
+    st.write("\n")
+    np = neuralprophet()
+    diff = '{:,.1f}'.format(float(np['Forecast_BTC_Price']) - float(np['Current_BTC_Price']))
+    forecast = '{:,.1f}'.format(float(np['Forecast_BTC_Price']))
+    col1, col2 = st.columns(2)
+    col1.metric("BTC Price @ " + np['timestamp'], np['Current_BTC_Price'])
+    col2.metric("Forecast @ " + np['Forecast_time'], forecast, diff)
 
-col1, col2= st.columns(2)
-col1.metric("BTC Price @ "+np['timestamp'],np['Current_BTC_Price'])
-col2.metric("Forecast @ "+np['Forecast_time'],forecast,diff)
-st.write("\n")
+with tab2:
+    st.header("Funding Rates")
+    bnb_funding=binance_funding()
 
-#2
+    df = pd.DataFrame([bnb_funding['binance_delivery']]).transpose()
+    df = df.rename(columns={0: 'FF(bp)'})
+    df['FF(bp)'] = df['FF(bp)'].apply(lambda x: float(x))
+    df = df.sort_values('FF(bp)', ascending=False)
 
-bnb_funding=binance_funding()
+    st.write("<Binance_last update: "+bnb_funding['timestamp']+">")
+    st.write("-Best 5")
+    st.table(df.head(5).transpose())
+    st.write("-Worst 5")
+    st.table(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
 
-df = pd.DataFrame([bnb_funding['binance_delivery']]).transpose()
-df = df.rename(columns={0: 'FF(bp)'})
-df['FF(bp)'] = df['FF(bp)'].apply(lambda x: float(x))
-df = df.sort_values('FF(bp)', ascending=False)
+with tab3:
+    st.header("Daily BTC Global Premium")
+    premium=global_premium()
+    st.write("< BASE PRICE : Binance "+premium[2]+ " ("+premium[1]+") >")
+    st.table(premium[0].transpose())
 
-
-st.header("2.Funding Rates")
-st.write("<Binance_last update: "+bnb_funding['timestamp']+">")
-st.write("-Best 5")
-st.table(df.head(5).transpose())
-st.write("-Worst 5")
-st.table(df.tail(5).sort_values('FF(bp)',ascending=True).transpose())
-
-#3
-st.header("3.Daily BTC Global Premium")
-
-premium=global_premium()
-st.write("< BASE PRICE : Binance "+premium[2]+ " ("+premium[1]+") >")
-st.table(premium[0].transpose())
-
-#4
-st.header("4.Economic Calendar")
-calendar=economic_calendar()
-st.table(calendar)
+with tab4:
+    st.header("Economic Calendar")
+    calendar=economic_calendar()
+    st.table(calendar)
 
 
 
