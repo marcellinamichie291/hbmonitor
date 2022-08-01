@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="utxo in profit(%) added">
+    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="2.Market_derivatives_scores">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/page2_bitcoin.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page2_bitcoin.py" afterDir="false" />
     </list>
@@ -155,7 +155,21 @@
       <option name="project" value="LOCAL" />
       <updated>1659232191855</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="funding_rates added to BTC derivatives score">
+      <created>1659252771816</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1659252771816</updated>
+    </task>
+    <task id="LOCAL-00010" summary="2.Market_derivatives_scores">
+      <created>1659252935166</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1659252935166</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -176,6 +190,8 @@
     <MESSAGE value="Economic Calendar Added" />
     <MESSAGE value="mainpage_tab_added" />
     <MESSAGE value="utxo in profit(%) added" />
-    <option name="LAST_COMMIT_MESSAGE" value="utxo in profit(%) added" />
+    <MESSAGE value="funding_rates added to BTC derivatives score" />
+    <MESSAGE value="2.Market_derivatives_scores" />
+    <option name="LAST_COMMIT_MESSAGE" value="2.Market_derivatives_scores" />
   </component>
 </project>
