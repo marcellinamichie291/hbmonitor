@@ -43,7 +43,7 @@ st.title("Page2 : Bitcoin_Score")
 #1 P/L
 
 symbol=['mvrv','sopr_ratio','puell_multiple','pnl_utxo']
-st.header("1.Onchain_P&L_Score")
+st.header("Onchain_P&L_Score")
 
 
 result={}
@@ -84,7 +84,7 @@ col5.metric('utxo in profit(%)',result.loc[symbol[3],'VALUE']+"%",result.loc[sym
 
 
 #2.Derivatives
-st.header("2.Market_Derivatives_Score") #the higher, the higher risk
+st.header("Market_Derivatives_Score") #the higher, the higher risk
 symbol=['open_interest','funding_rates','dvol']
 
 
