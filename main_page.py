@@ -7,10 +7,9 @@ from boto3.dynamodb.conditions import Key
 service='dynamodb'
 region_name='ap-northeast-2'
 
-aws_access_key_id="AKIA6IE5OZRJDUDS74NL"
-aws_secret_access_key="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"
-#aws_access_key_id=st.secrets['aws_access']
-#aws_secret_access_key=st.secrets['aws_secret']
+
+aws_access_key_id=st.secrets['aws_access']
+aws_secret_access_key=st.secrets['aws_secret']
 
 
 def binance_funding():

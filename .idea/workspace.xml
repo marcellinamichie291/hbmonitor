@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="2.Market_derivatives_scores&#10;-DVOL added">
+    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="Upbit Disclosure added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/page2_bitcoin.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page3_bitcoin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/page3_ethereum.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page4_ethereum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/page4_tron.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page5_tron.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +212,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659337428731</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Upbit Disclosure added">
+      <created>1659430630120</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1659430630120</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -239,6 +243,7 @@
     <MESSAGE value="funding_rates added to BTC derivatives score" />
     <MESSAGE value="2.Market_derivatives_scores" />
     <MESSAGE value="2.Market_derivatives_scores&#10;-DVOL added" />
-    <option name="LAST_COMMIT_MESSAGE" value="2.Market_derivatives_scores&#10;-DVOL added" />
+    <MESSAGE value="Upbit Disclosure added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Upbit Disclosure added" />
   </component>
 </project>
