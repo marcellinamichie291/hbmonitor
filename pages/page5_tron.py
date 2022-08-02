@@ -45,7 +45,7 @@ def trx_usdd_chart():
     return df
 
 #1
-st.title("Page4 : Risk on Tron ")
+st.title("Page5 : Risk on Tron ")
 usdd=trx_usdd_eod()
 st.header("1.USDD - Algorithmic stablecoin")
 st.write(usdd)

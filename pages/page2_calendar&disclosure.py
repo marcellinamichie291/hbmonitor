@@ -65,7 +65,7 @@ def get_upbit_disclosure():
     return df
 
 
-st.title("Disclosure")
+st.title("Page2: Disclosure")
 
 tab1,tab2= st.tabs(["Economic Calendar",'Upbit_Disclosure'])
 

@@ -38,7 +38,7 @@ def fetch_data(type,df_day):
 
 
 #1.Bitcoin Monitoring
-st.title("Page2 : Bitcoin_Score")
+st.title("Page3 : Bitcoin_Score")
 
 #1 P/L
 
