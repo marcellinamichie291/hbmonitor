@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="2.Market_derivatives_scores&#10;-DVOL added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/page2_bitcoin.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page2_bitcoin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/page2_bitcoin.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page3_bitcoin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/page3_ethereum.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page4_ethereum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/page4_tron.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page5_tron.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +43,7 @@
       <recent name="$PROJECT_DIR$/pages" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.page2_bitcoin">
+  <component name="RunManager" selected="Python.page2_disclosure">
     <configuration name="main_page" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="hbmonitor" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -62,7 +65,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="page2_bitcoin" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="page2_disclosure" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="hbmonitor" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -74,7 +77,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pages/page2_bitcoin.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pages/page2_disclosure.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="page3_bitcoin" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="hbmonitor" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pages" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pages/page3_bitcoin.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -85,7 +109,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.page2_bitcoin" />
+        <item itemvalue="Python.page2_disclosure" />
+        <item itemvalue="Python.page3_bitcoin" />
         <item itemvalue="Python.main_page" />
       </list>
     </recent_temporary>
@@ -183,7 +208,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659329661308</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="2.Market_derivatives_scores&#10;-DVOL added">
+      <created>1659337428731</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1659337428731</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
