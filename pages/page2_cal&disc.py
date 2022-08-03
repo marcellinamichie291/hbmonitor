@@ -64,10 +64,30 @@ def get_upbit_disclosure():
 
     return df
 
+def get_bithumb_disclosure():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('cex_disclosure')
+    response = table.query(KeyConditionExpression=Key('cex').eq('bithumb'),Limit=10,ScanIndexForward=False)
+    df=pd.DataFrame(response['Items'])[['timestamp','title']]
+    df['timestamp']=df['timestamp'].apply(lambda x : x.rstrip(x[-3:]))
+    df=df.set_index('timestamp',drop=True)
 
-st.title("Page2: Disclosure")
+    return df
 
-tab1,tab2= st.tabs(["Economic Calendar",'Upbit_Disclosure'])
+def get_korbit_disclosure():
+    dynamodb = boto3.resource(service, region_name=region_name,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
+    table = dynamodb.Table('cex_disclosure')
+    response = table.query(KeyConditionExpression=Key('cex').eq('korbit'),Limit=10,ScanIndexForward=False)
+    df=pd.DataFrame(response['Items'])[['timestamp','title']]
+    df['timestamp']=df['timestamp'].apply(lambda x : x.rstrip(x[-3:]))
+    df=df.set_index('timestamp',drop=True)
+
+    return df
+
+
+st.title("Page2: Economic Calendar & Disclosure")
+
+tab1,tab2,tab3,tab4= st.tabs(["Econ Cal",'Upbit','Bithumb','Korbit'])
 
 
 with tab1:
@@ -79,3 +99,13 @@ with tab2:
     st.header("Upbit Disclosure")
     upbit=pd.DataFrame(get_upbit_disclosure())
     st.table(upbit)
+
+with tab3:
+    st.header("Bithumb Disclosure")
+    bithumb=pd.DataFrame(get_bithumb_disclosure())
+    st.table(bithumb)
+
+with tab4:
+    st.header("Korbit Disclosure")
+    korbit=pd.DataFrame(get_korbit_disclosure())
+    st.table(korbit)
