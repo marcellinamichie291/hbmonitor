@@ -19,7 +19,10 @@ url={'mvrv' : 'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=d
      'pnl_utxo':'https://api.cryptoquant.com/v1/btc/network-indicator/pnl-utxo?window=day&limit=2000&from=',
      'open_interest': 'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=2000&exchange=all_exchange&from=',
      'funding_rates': 'https://api.cryptoquant.com/v1/btc/market-data/funding-rates?window=day&limit=2000&exchange=all_exchange&from=',
-     'dvol':'https://test.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&resolution=1D&start_timestamp=1614524400000&end_timestamp='
+     'dvol':'https://test.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&resolution=1D&start_timestamp=1614524400000&end_timestamp=',
+     'hashrate' : "https://api.cryptoquant.com/v1/btc/network-data/hashrate?window=day&limit=2000&from=",
+     'blockreward' : 'https://api.cryptoquant.com/v1/btc/network-data/blockreward?window=day&limit=2000&from=',
+
     }
 
 
@@ -44,6 +47,7 @@ st.title("Page3 : Bitcoin_Score")
 
 symbol=['mvrv','sopr_ratio','puell_multiple','pnl_utxo']
 st.header("-Onchain_P&L_Score")
+
 
 
 result={}
@@ -73,14 +77,43 @@ for i in symbol:
 
     result[i]=tmp
 
+
+#Mining_Density
+hashrate=fetch_data('hashrate',365*5) #rolling평균이 필요하므로 1년 연장
+blockreward=fetch_data('blockreward',365*5)[['blockreward_usd']]
+df=hashrate.join(blockreward,how='left')
+df['mining_density']=df['hashrate']/df['blockreward_usd']/1000
+df=df[['mining_density']]
+df['15d_ma']=df['mining_density'].rolling(15).mean()
+df['365d_ma']=df['mining_density'].rolling(365).mean()
+
+df['diff_ma']=df['15d_ma']-df['365d_ma'] #(+) -> bear / (-) ->bull
+df['rank']=df['diff_ma'].rank(ascending=True)
+
+t0=df['mining_density'][-1]
+t1=df['mining_density'][-2]
+diff=t0-t1
+rank=100*df['rank'][-1]/len(df)
+
+
+tmp={
+        'VALUE' : '{:,.2f}'.format(t0),
+        'DIFF' : '{:,.2f}'.format(diff),
+        'SCORE': '{:,.0f}'.format(rank),
+    }
+
+result['mining_density']=tmp
+
+
 result=pd.DataFrame(result).transpose()
 
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4, col5, col6 = st.columns(6)
 col1.metric("score",result['SCORE'].astype(float).mean().astype(int))
 col2.metric(symbol[0],result.loc[symbol[0],'VALUE'],result.loc[symbol[0],'DIFF'])
 col3.metric(symbol[1],result.loc[symbol[1],'VALUE'],result.loc[symbol[1],'DIFF'])
 col4.metric(symbol[2],result.loc[symbol[2],'VALUE'],result.loc[symbol[2],'DIFF'])
-col5.metric('utxo in profit(%)',result.loc[symbol[3],'VALUE']+"%",result.loc[symbol[3],'DIFF'])
+col5.metric('utxo in profit(%)',result.loc[symbol[3],'VALUE'],result.loc[symbol[3],'DIFF'])
+col6.metric('mining_density',result.loc['mining_density','VALUE'],result.loc['mining_density','DIFF'])
 
 
 #2.Derivatives
@@ -133,6 +166,8 @@ col1.metric("score",result['SCORE'].astype(float).mean().astype(int))
 col2.metric("Open interest RSI(14d)",result.loc[symbol[0],'VALUE'],result.loc[symbol[0],'DIFF'])
 col3.metric("Funding rates(PERP,8h)",result.loc[symbol[1],'VALUE']+'bp',result.loc[symbol[1],'DIFF'])
 col4.metric("DVOL_EOD",result.loc[symbol[2],'VALUE']+"%",result.loc[symbol[2],'DIFF'])
+
+#3.Onchain_growth_score
 
 
 
