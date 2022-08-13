@@ -19,7 +19,7 @@ url={'mvrv' : 'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=d
      'pnl_utxo':'https://api.cryptoquant.com/v1/btc/network-indicator/pnl-utxo?window=day&limit=2000&from=',
      'open_interest': 'https://api.cryptoquant.com/v1/btc/market-data/open-interest?window=day&limit=2000&exchange=all_exchange&from=',
      'funding_rates': 'https://api.cryptoquant.com/v1/btc/market-data/funding-rates?window=day&limit=2000&exchange=all_exchange&from=',
-     'dvol':'https://test.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&resolution=1D&start_timestamp=1614524400000&end_timestamp=',
+     'dvol':'https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&resolution=1D&start_timestamp=1614524400000&end_timestamp=',
      'hashrate' : "https://api.cryptoquant.com/v1/btc/network-data/hashrate?window=day&limit=2000&from=",
      'blockreward' : 'https://api.cryptoquant.com/v1/btc/network-data/blockreward?window=day&limit=2000&from=',
 
@@ -139,7 +139,6 @@ for i in symbol:
         df = pd.DataFrame(data['result']['data'])[[0, 4]].rename(columns={0:'date',4:i}).set_index('date', drop=True).sort_index(ascending=True)
         df['rank'] = df[i].rank(ascending=True)
         rank = 100 * int(df['rank'].tail(1)) / len(df)
-
         t0=float(df[i].tail(1))
         t_1=float(df[i].tail(2).head(1))
         diff=t0-t_1

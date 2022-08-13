@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="korbit,upbit,bithumb disc added">
+    <list default="true" id="7c62358a-d983-4255-b32d-ada36a503b10" name="Changes" comment="mining_density(15d vs 365d) added to the Onchain PnL index">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/page3_bitcoin.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/page3_bitcoin.py" afterDir="false" />
     </list>
@@ -298,7 +298,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659507787792</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="mining_density(15d vs 365d) added to the Onchain PnL index">
+      <created>1660093496538</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1660093496538</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -325,6 +332,7 @@
     <MESSAGE value="Upbit Disclosure added" />
     <MESSAGE value="typo corrected" />
     <MESSAGE value="korbit,upbit,bithumb disc added" />
-    <option name="LAST_COMMIT_MESSAGE" value="korbit,upbit,bithumb disc added" />
+    <MESSAGE value="mining_density(15d vs 365d) added to the Onchain PnL index" />
+    <option name="LAST_COMMIT_MESSAGE" value="mining_density(15d vs 365d) added to the Onchain PnL index" />
   </component>
 </project>
