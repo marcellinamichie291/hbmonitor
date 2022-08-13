@@ -8,7 +8,6 @@ import time
 
 
 
-
 access_token=st.secrets['cryptoquant']
 headers = {'Authorization': 'Bearer ' + access_token}
 
@@ -22,6 +21,7 @@ url={'mvrv' : 'https://api.cryptoquant.com/v1/btc/market-indicator/mvrv?window=d
      'dvol':'https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&resolution=1D&start_timestamp=1614524400000&end_timestamp=',
      'hashrate' : "https://api.cryptoquant.com/v1/btc/network-data/hashrate?window=day&limit=2000&from=",
      'blockreward' : 'https://api.cryptoquant.com/v1/btc/network-data/blockreward?window=day&limit=2000&from=',
+     'spent_output_age_distribution' : 'https://api.cryptoquant.com/v1/btc/network-indicator/spent-output-age-distribution?window=day&limit=2000&from='
 
     }
 
@@ -46,7 +46,7 @@ st.title("Page3 : Bitcoin_Score")
 #1 P/L
 
 symbol=['mvrv','sopr_ratio','puell_multiple','pnl_utxo']
-st.header("-Onchain_P&L_Score")
+st.header("1.Onchain_P&L_Score")
 
 
 
@@ -59,7 +59,6 @@ for i in symbol:
         df['rank'] = df[i].rank(ascending=False)  # the lower index, ther higher score
 
     else:
-        df=fetch_data(i,365*5)
         df['rank'] = df[i].rank(ascending=False)  # the lower index, ther higher score
 
 
@@ -117,7 +116,7 @@ col6.metric('mining_density',result.loc['mining_density','VALUE'],result.loc['mi
 
 
 #2.Derivatives
-st.header("-Market_Derivatives_Score") #the higher, the higher risk
+st.header("2.Market_Derivatives_Score") #the higher, the higher risk
 symbol=['open_interest','funding_rates','dvol']
 
 
@@ -134,8 +133,8 @@ for i in symbol:
         diff = t0-t_1
 
     elif i=='dvol': #The higher vol, the higher score
-        url=url[i]+str(int(time.time())*1000)
-        data = requests.get(url).json()
+        dvol_url=url[i]+str(int(time.time())*1000) #dvol_url로 선언해야 url과 충돌이 안생김
+        data = requests.get(dvol_url).json()
         df = pd.DataFrame(data['result']['data'])[[0, 4]].rename(columns={0:'date',4:i}).set_index('date', drop=True).sort_index(ascending=True)
         df['rank'] = df[i].rank(ascending=True)
         rank = 100 * int(df['rank'].tail(1)) / len(df)
@@ -166,7 +165,27 @@ col2.metric("Open interest RSI(14d)",result.loc[symbol[0],'VALUE'],result.loc[sy
 col3.metric("Funding rates(PERP,8h)",result.loc[symbol[1],'VALUE']+'bp',result.loc[symbol[1],'DIFF'])
 col4.metric("DVOL_EOD",result.loc[symbol[2],'VALUE']+"%",result.loc[symbol[2],'DIFF'])
 
-#3.Onchain_growth_score
+
+#3.Whale spentout Tracker
+st.header("3.Whale score") #the higher, the higher risk
+
+df=fetch_data('spent_output_age_distribution' , 365*5)[['range_7y_10y_percent']]
+
+df['rank'] = df['range_7y_10y_percent'].rank(ascending=False)  # the lower index, the higher score
+t0 = 100*df['range_7y_10y_percent'][-1]
+t_1 = 100*df['range_7y_10y_percent'][-2]
+diff = t0 - t_1
+rank = 100 * df['rank'][-1] / len(df)
+
+tmp = {
+    'VALUE': '{:,.2f}%'.format(t0),
+    'DIFF': '{:,.2f}%'.format(diff),
+    'SCORE': '{:,.0f}'.format(rank),
+}
+
+col1, col2 = st.columns(2)
+col1.metric("score",tmp['SCORE'])
+col2.metric("7y_10y Spent Output(%)",tmp['VALUE'],tmp['DIFF'])
 
 
 
